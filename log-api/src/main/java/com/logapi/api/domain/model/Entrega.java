@@ -13,9 +13,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import javax.validation.groups.ConvertGroup;
+import javax.validation.groups.Default;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
+import com.logapi.api.domain.ValidationGroups;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -34,11 +39,16 @@ public class Entrega {
 	
 	@ManyToOne // relacionamento entre entrega e cliente, dizendo que é N(muitos) para 1
 	// muitas entregas para um cliente
+	@NotNull
+	@Valid // valida o objeto cliente
+	@ConvertGroup(from = Default.class, to = ValidationGroups.ClienteId.class) // mudando a validação de default para validationgroup
 	private Cliente cliente; // associação com a entidade cliente
 	
+	@Valid
 	@Embedded 
 	private Destinatario destinatario; // associação com a entidade Destinatario
 
+	@NotNull
 	private BigDecimal taxa;
 	
 	@JsonProperty(access = Access.READ_ONLY) // apenas leitura, para o consumidor da api
@@ -50,6 +60,4 @@ public class Entrega {
 	
 	@JsonProperty(access = Access.READ_ONLY)
 	private LocalDateTime dataFinalizacao;
-	
-	
 }

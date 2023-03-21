@@ -1,0 +1,1 @@
+INDEX VERSION 1.132+/home/douglas/api-spring-boot/log-api/src/main/java/com/logapi/api/.metadata/.plugins/org.eclipse.jdt.core

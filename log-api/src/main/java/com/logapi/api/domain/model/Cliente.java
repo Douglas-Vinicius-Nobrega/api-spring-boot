@@ -7,21 +7,22 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import com.logapi.api.domain.ValidationGroups;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
-
 @EqualsAndHashCode(onlyExplicitlyIncluded = true) // 
-
 @Getter
 @Setter
 @Entity // Jarkata 
-public class Cliente {
+public class Cliente { 
 	
-	@EqualsAndHashCode.Include // apenas o ID vai ser gerado os metodos Equald e hashcode
-	@Id // identifica a entidade, estamos indentificando a chave primeira dessa classe
+	@NotNull(groups = ValidationGroups.ClienteId.class) // mudamos a validação do clienteId
+	@EqualsAndHashCode.Include // apenas o ID vai ser gerado os metodos Equalw e hashcode
+	@Id // identifica a entidade, estamos indentificando a chave primaria dessa classe
 	@GeneratedValue(strategy = GenerationType.IDENTITY) // usando a forma nativa do db
 	private Long id;
 	
@@ -39,6 +40,4 @@ public class Cliente {
 	@Size(max = 20)
 	@Column(name = "fone") // no meu db está com fone e aqui telefone
 	private String telefone;
-	
-	
 }

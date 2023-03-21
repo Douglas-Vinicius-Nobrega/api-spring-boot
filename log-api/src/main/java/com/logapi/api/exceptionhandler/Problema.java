@@ -28,4 +28,38 @@ public class Problema {
 		private String nome;
 		private String mensagem;
 	}
+
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
+
+	public LocalDateTime getDataHora() {
+		return dataHora;
+	}
+
+	public void setDataHora(LocalDateTime dataHora) {
+		this.dataHora = dataHora;
+	}
+
+	public String getTitulo() {
+		return titulo;
+	}
+
+	public void setTitulo(String titulo) {
+		this.titulo = titulo;
+	}
+
+	public List<Campo> getCampos() {
+		return campos;
+	}
+
+	public void setCampos(List<Campo> campos) {
+		this.campos = campos;
+	}
+	
+	
 }

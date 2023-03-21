@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.logapi.api.domain.model.Cliente;
-import com.logapi.api.domain.repository.ClienteRepository;
+import com.logapi.api.domain.repository.ClienteRepository; 
 import com.logapi.api.domain.service.CatalogoClienteService;
 
 import lombok.AllArgsConstructor;

@@ -22,7 +22,6 @@ public class CatalogoClienteService {
 				.orElseThrow(() -> new NegocioException("Cliente não encontrado"));
 	}
 	
-	
 	@Transactional
 	public Cliente salvar(Cliente cliente) {
 		boolean emailEmuso = clienteRepository.findByEmail(cliente.getEmail())
