@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.logapi.api.domain.model.Entrega;
 import com.logapi.api.domain.repository.EntregaRepository;
 import com.logapi.api.domain.service.SolicitacaoEntregaService;
+import com.logapi.api.model.DestinatarioModel;
+import com.logapi.api.model.EntregaModel;
 
 import lombok.AllArgsConstructor;
 
@@ -40,9 +42,28 @@ public class EntregaController {
 	}
 	
 	@GetMapping("/{entregaId}")
-	public ResponseEntity<Entrega> buscar(@PathVariable Long entregaId){
+	public ResponseEntity<EntregaModel> buscar(@PathVariable Long entregaId){
 		return entregaRepository.findById(entregaId).
-				map(ResponseEntity::ok)
+				map(entrega -> {
+					EntregaModel entregaModel = new EntregaModel();
+					entregaModel.setId(entrega.getId());
+					entregaModel.setNomeCliente(entrega.getCliente().getNome());
+					entregaModel.setDestinatario(new DestinatarioModel());
+					
+					entregaModel.getDestinatario().setNumero(entrega.getDestinatario().getNumero());
+					entregaModel.getDestinatario().setNome(entrega.getDestinatario().getNome());
+					entregaModel.getDestinatario().setLogradouro(entrega.getDestinatario().getLogradouro());		
+					entregaModel.getDestinatario().setComplemento(entrega.getDestinatario().getComplemento());
+					entregaModel.getDestinatario().setBairro(entrega.getDestinatario().getBairro());
+					
+					entregaModel.setTaxa(entrega.getTaxa());
+					entregaModel.setStatus(entrega.getStatus());
+					entregaModel.setDataPedido(entrega.getDataPedido());
+					entregaModel.setDataFinalizado(entrega.getDataFinalizacao());
+					
+					
+					return ResponseEntity.ok(entregaModel);
+				}) // expressão lambida
 				.orElse(ResponseEntity.notFound().build());
 	}
 }

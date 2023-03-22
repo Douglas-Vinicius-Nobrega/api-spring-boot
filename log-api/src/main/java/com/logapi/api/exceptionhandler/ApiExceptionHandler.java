@@ -1,6 +1,6 @@
 package com.logapi.api.exceptionhandler;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,7 +45,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 		Problema problema = new Problema(); // instanciando o objeto problema
 		
 		problema.setStatus(status.value()); // retorna o código de status http
-		problema.setDataHora(LocalDateTime.now()); // retorna data e hora 
+		problema.setDataHora(OffsetDateTime.now()); // retorna data e hora 
 		problema.setTitulo("Um ou mais campos estão inválidos.");
 		problema.setCampos(campos);
 		
@@ -59,7 +59,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 		
 		Problema problema = new Problema();
 		problema.setStatus(status.value()); // retorna o código de status http
-		problema.setDataHora(LocalDateTime.now()); // retorna data e hora 
+		problema.setDataHora(OffsetDateTime.now()); // retorna data e hora 
 		problema.setTitulo(ex.getMessage());
 		
 		return handleExceptionInternal(ex, problema, new HttpHeaders(), status, request);
