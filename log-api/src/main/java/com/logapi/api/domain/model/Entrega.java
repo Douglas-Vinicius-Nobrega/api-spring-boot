@@ -33,35 +33,34 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@EqualsAndHashCode(onlyExplicitlyIncluded = true) // hashcode e equals apenas para o ID
-@Entity // transformando em uma entidade para o Jakarta persisten essa classe
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@Entity 
 public class Entrega {
 	
 	@EqualsAndHashCode.Include
-	@Id // chave primaria dessa entidade
-	@GeneratedValue(strategy = GenerationType.IDENTITY) // auto incremento
+	@Id 
+	@GeneratedValue(strategy = GenerationType.IDENTITY) 
 	private Long id;
 	
-	@ManyToOne // relacionamento entre entrega e cliente, dizendo que é N(muitos) para 1
-	// muitas entregas para um cliente
+	@ManyToOne 
 	@NotNull
 	@Valid // valida o objeto cliente
-	@ConvertGroup(from = Default.class, to = ValidationGroups.ClienteId.class) // mudando a validação de default para validationgroup
-	private Cliente cliente; // associação com a entidade cliente
+	@ConvertGroup(from = Default.class, to = ValidationGroups.ClienteId.class) 
+	private Cliente cliente; 
 	
 	@Valid
 	@Embedded 
-	private Destinatario destinatario; // associação com a entidade Destinatario
+	private Destinatario destinatario; 
 
 	@NotNull
 	private BigDecimal taxa;
 	
-	@OneToMany(mappedBy = "entrega", cascade = CascadeType.ALL) // propriedade dona do relacionamento
+	@OneToMany(mappedBy = "entrega", cascade = CascadeType.ALL) 
 	private List<Ocorrencia> ocorrencias = new ArrayList<>();
 	
-	@JsonProperty(access = Access.READ_ONLY) // apenas leitura, para o consumidor da api
+	@JsonProperty(access = Access.READ_ONLY) 
 	@Enumerated(EnumType.STRING)
-	private StatusEntrega status; // associação com a entidade StatusEntrega
+	private StatusEntrega status; 
 	
 	@JsonProperty(access = Access.READ_ONLY)
 	private OffsetDateTime dataPedido;

@@ -24,31 +24,29 @@ import com.logapi.api.domain.service.CatalogoClienteService;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-@RestController // controlador rest, o spring vai reconhecer essa classe como componente
+@RestController
 @RequestMapping("/clientes")
 public class ClienteController {
 	
-	@Autowired // anotação do spring
+	@Autowired
 	private ClienteRepository clienteRepository;
 	private CatalogoClienteService catalogoClienteService;
 
-	@GetMapping //requisição 
+	@GetMapping
 	public List<Cliente> listar() {
-		// spring data jpa
-		return clienteRepository.findAll(); // fazendo a consulta através do nosso repositório
+		return clienteRepository.findAll(); 
 	}
 	
 	@GetMapping("/{clienteId}")
-	public ResponseEntity<Cliente> buscar(@PathVariable long clienteId) { // métodos buscar um cliente
+	public ResponseEntity<Cliente> buscar(@PathVariable long clienteId) { 
 		return clienteRepository.findById(clienteId)
-				.map(ResponseEntity::ok) // verificação se tem recursos, se tiver retorno 202
+				.map(ResponseEntity::ok)
 				.orElse(ResponseEntity.notFound().build());
 	}
 	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED) 
 	public Cliente adicionar(@Valid @RequestBody Cliente cliente) {
-		//return clienteRepository.save(cliente);
 		return catalogoClienteService.salvar(cliente);
 	}
 	
@@ -60,7 +58,6 @@ public class ClienteController {
 		}
 	
 		cliente.setId(clienteId); // atualizar um cliente
-//		cliente = clienteRepository.save(cliente);
 		cliente = catalogoClienteService.salvar(cliente);
 		
 		return ResponseEntity.ok(cliente);
@@ -73,11 +70,8 @@ public class ClienteController {
 			return ResponseEntity.notFound().build();
 			// se o cliente não existe, retorna um 404
 		}
-		// caso existir, deletar esse usuário
-//		clienteRepository.deleteById(clienteId);
 		catalogoClienteService.excluir(clienteId);
 		
-		// assim que excluir, retorna 404, pois para essa requisição, não vamos retorna um corpo
 		return ResponseEntity.noContent().build();
 	}
 }

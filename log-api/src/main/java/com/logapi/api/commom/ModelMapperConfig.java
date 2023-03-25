@@ -1,5 +1,3 @@
-// Deixando a biblioteca ModelMapper tornando ele tipo bean, para uso do spring
-
 package com.logapi.api.commom;
 
 import org.modelmapper.ModelMapper;

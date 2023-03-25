@@ -34,8 +34,6 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 		
 		List<Problema.Campo> campos = new ArrayList<>();
 		
-		// pegando todos o erros que foram atribuindo nessa requisição
-		// cada erro, nós vamos jogar na variavel error
 		for(ObjectError error : ex.getBindingResult().getAllErrors()) {
 			String nome = ((FieldError) error).getField(); // 
 			String mensagem = messageSource.getMessage(error, LocaleContextHolder.getLocale());
@@ -43,10 +41,10 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 			campos.add(new Problema.Campo(nome, mensagem));
 		}
 		
-		Problema problema = new Problema(); // instanciando o objeto problema
+		Problema problema = new Problema(); 
 		
-		problema.setStatus(status.value()); // retorna o código de status http
-		problema.setDataHora(OffsetDateTime.now()); // retorna data e hora 
+		problema.setStatus(status.value());
+		problema.setDataHora(OffsetDateTime.now()); 
 		problema.setTitulo("Um ou mais campos estão inválidos.");
 		problema.setCampos(campos);
 		
@@ -60,7 +58,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 		
 		Problema problema = new Problema();
 		problema.setStatus(status.value()); // retorna o código de status http
-		problema.setDataHora(OffsetDateTime.now()); // retorna data e hora 
+		problema.setDataHora(OffsetDateTime.now()); 
 		problema.setTitulo(ex.getMessage());
 		
 		return handleExceptionInternal(ex, problema, new HttpHeaders(), status, request);
@@ -72,8 +70,8 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 		HttpStatus status = HttpStatus.BAD_REQUEST; // código de status 400
 		
 		Problema problema = new Problema();
-		problema.setStatus(status.value()); // retorna o código de status http
-		problema.setDataHora(OffsetDateTime.now()); // retorna data e hora 
+		problema.setStatus(status.value()); 
+		problema.setDataHora(OffsetDateTime.now()); 
 		problema.setTitulo(ex.getMessage());
 		
 		return handleExceptionInternal(ex, problema, new HttpHeaders(), status, request);

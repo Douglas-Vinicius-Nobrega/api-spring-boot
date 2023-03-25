@@ -17,14 +17,13 @@ import lombok.Setter;
 public class Problema {
 
 	private Integer status;
-	private OffsetDateTime dataHora; // hora que foi gerado o problema
+	private OffsetDateTime dataHora; 
 	private String titulo;
 	private List<Campo> campos;
 	
-	@AllArgsConstructor // constructor
+	@AllArgsConstructor 
 	@Getter
 	public static class Campo { 
-		// esse classe vai ter um constructor, que recebe nome e mensagem
 		private String nome;
 		private String mensagem;
 	}

@@ -26,13 +26,10 @@ public class CatalogoClienteService {
 	public Cliente salvar(Cliente cliente) {
 		boolean emailEmuso = clienteRepository.findByEmail(cliente.getEmail())
 				.stream()
-				.anyMatch(clienteExistente -> !clienteExistente.equals(cliente)); // retorna um optional 
-				// se o cliente do repositório, for difente doq a gente está salvando
-				// ai vai da match (true)
+				.anyMatch(clienteExistente -> !clienteExistente.equals(cliente)); 
 		
 		if(emailEmuso) {
 			throw new NegocioException("Já existe um cliente cadastrado com esse e-mail");
-			// lançamos um exception com essa mensagem
 		}
 		return clienteRepository.save(cliente);
 	}

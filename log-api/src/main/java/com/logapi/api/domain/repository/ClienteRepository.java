@@ -11,8 +11,7 @@ import com.logapi.api.domain.model.Cliente;
 @Repository // é um componente do spring é um repositório
 public interface ClienteRepository extends JpaRepository<Cliente, Long> {
 	
-	List<Cliente> findByNome(String nome); // implementando uma pesquisa por nome
+	List<Cliente> findByNome(String nome);
 	List<Cliente> findByNomeContaining(String nome);
-	// optional, pode ter um email já cadastrado ou não
 	Optional<Cliente> findByEmail(String email);
 }

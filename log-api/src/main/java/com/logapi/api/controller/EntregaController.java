@@ -37,7 +37,6 @@ public class EntregaController {
 	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	// nos parametros, recebendo um Entrega e retornamos um entrega 
 	public EntregaModel solicitar(@Valid @RequestBody EntregaInput entregaInput) {
 		Entrega novaEntrega = entregaAssembler.toEntity(entregaInput);
 		Entrega entregaSolicitada = solicitaEntregaService.solicitar(novaEntrega);
