@@ -9,15 +9,18 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.logapi.api.assembler.EntregaAssembler;
 import com.logapi.api.domain.model.Entrega;
+import com.logapi.api.domain.model.input.EntregaInput;
 import com.logapi.api.domain.repository.EntregaRepository;
+import com.logapi.api.domain.service.FinalizacaoEntregaService;
 import com.logapi.api.domain.service.SolicitacaoEntregaService;
-import com.logapi.api.model.DestinatarioModel;
 import com.logapi.api.model.EntregaModel;
 
 import lombok.AllArgsConstructor;
@@ -29,41 +32,34 @@ public class EntregaController {
 
 	private EntregaRepository entregaRepository;
 	private SolicitacaoEntregaService solicitaEntregaService;
+	private FinalizacaoEntregaService finalizacaoEntregaService;
+	private EntregaAssembler entregaAssembler; // biblioteca indepedente do spring
 	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public Entrega solicitar(@Valid @RequestBody Entrega entrega) {
-		return solicitaEntregaService.solicitar(entrega);
+	// nos parametros, recebendo um Entrega e retornamos um entrega 
+	public EntregaModel solicitar(@Valid @RequestBody EntregaInput entregaInput) {
+		Entrega novaEntrega = entregaAssembler.toEntity(entregaInput);
+		Entrega entregaSolicitada = solicitaEntregaService.solicitar(novaEntrega);
+		
+		return entregaAssembler.toModel(entregaSolicitada);
+	}
+	
+	@PutMapping("/{entregaId}/finalizacao")
+	@ResponseStatus(HttpStatus.NO_CONTENT) // retorna 204
+	public void finalizar(@PathVariable Long entregaId) {
+		finalizacaoEntregaService.finalizar(entregaId);
 	}
 	
 	@GetMapping
-	public List<Entrega> listar() { // retorna lista de entrega
-		return entregaRepository.findAll();
+	public List<EntregaModel> listar() { // retorna lista de entrega
+		return entregaAssembler.toCollectionModel(entregaRepository.findAll());
 	}
 	
 	@GetMapping("/{entregaId}")
 	public ResponseEntity<EntregaModel> buscar(@PathVariable Long entregaId){
 		return entregaRepository.findById(entregaId).
-				map(entrega -> {
-					EntregaModel entregaModel = new EntregaModel();
-					entregaModel.setId(entrega.getId());
-					entregaModel.setNomeCliente(entrega.getCliente().getNome());
-					entregaModel.setDestinatario(new DestinatarioModel());
-					
-					entregaModel.getDestinatario().setNumero(entrega.getDestinatario().getNumero());
-					entregaModel.getDestinatario().setNome(entrega.getDestinatario().getNome());
-					entregaModel.getDestinatario().setLogradouro(entrega.getDestinatario().getLogradouro());		
-					entregaModel.getDestinatario().setComplemento(entrega.getDestinatario().getComplemento());
-					entregaModel.getDestinatario().setBairro(entrega.getDestinatario().getBairro());
-					
-					entregaModel.setTaxa(entrega.getTaxa());
-					entregaModel.setStatus(entrega.getStatus());
-					entregaModel.setDataPedido(entrega.getDataPedido());
-					entregaModel.setDataFinalizado(entrega.getDataFinalizacao());
-					
-					
-					return ResponseEntity.ok(entregaModel);
-				}) // expressão lambida
-				.orElse(ResponseEntity.notFound().build());
+				map(entrega -> ResponseEntity.ok(entregaAssembler.toModel(entrega)))
+						.orElse(ResponseEntity.notFound().build());
 	}
 }

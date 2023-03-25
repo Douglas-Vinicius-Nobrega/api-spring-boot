@@ -1,3 +1,5 @@
+// Classe de segurança da entidade destinatario
+
 package com.logapi.api.model;
 
 import lombok.Getter;
